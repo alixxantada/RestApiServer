@@ -1,7 +1,9 @@
 // Para instalar cors --> npm install cors
+// Se necesita instalar mongoose para conectar DB --> npm i mongoose
 
 const express = require("express");
-var cors = require("cors");
+const cors = require("cors");
+const { dbConnection } = require("../database/config");
 
 class Server {
   constructor() {
@@ -9,11 +11,19 @@ class Server {
     this.port = process.env.PORT;
     this.usuariosRoutePath = "/api/usuarios";
 
+    // Conectar a BBDD
+    this.conectarDB();
+
     // Middlewares
     this.middlewares();
 
     // Rutas de la aplicacion
     this.routes();
+  }
+
+  // Creando la conexion a la bbdd
+  async conectarDB() {
+    await dbConnection();
   }
 
   middlewares() {
