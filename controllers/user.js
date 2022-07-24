@@ -2,7 +2,7 @@ const { request, response } = require("express");
 
 const userGet = (req = request, res = response) => {
   const { q, nombre = "No name", apikey, page = 1, limit } = req.query; // si le damos valores, estariamos indicando valor predefinido en caso de que no venga esa dato en la query
-
+  //Probando
   // Para enviar la respuesta en formato json y añadimos un status con el código que queramos( res.status(403).json({ )
   res.json({
     msg: "get API - controlador",
