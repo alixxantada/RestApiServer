@@ -14,12 +14,16 @@ const validarJWT = async (req = request, res = response, next) => {
 
     // comprobar a que usuario pertenece el JWT
     const usuario = await Usuario.findById(uid);
+
     // Verificar si el usuario tiene estado true(estaria de alta)
     if (!usuario.estado) {
       return res.status(401).json({
         msg: "Token no válido - El usuario está de baja",
       });
     }
+
+    req.usuario = usuario;
+    next();
   } catch (error) {
     console.log(error);
     res.status(401).json();
