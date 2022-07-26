@@ -15,6 +15,12 @@ const validarJWT = async (req = request, res = response, next) => {
     // comprobar a que usuario pertenece el JWT
     const usuario = await Usuario.findById(uid);
 
+    if (!usuario) {
+      return res.status(401).json({
+        msg: "Token no válido - El usuario no existe en BBDD",
+      });
+    }
+
     // Verificar si el usuario tiene estado true(estaria de alta)
     if (!usuario.estado) {
       return res.status(401).json({
