@@ -35,7 +35,7 @@ const UsuarioSchema = Schema({
 });
 
 UsuarioSchema.methods.toJSON = function () {
-  // Aqui le quitamos el __v y password al usuario y lo devolvemos en la respuesta con el resto de datos
+  // Aqui le quitamos el __v y password al usuario y lo devolvemos en la respuesta con el resto de datos(de esta forma le quitamos el __v y la password)
   const { __v, password, ...user } = this.toObject();
   return user;
 };
