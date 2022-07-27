@@ -18,7 +18,6 @@ const login = async (req, res = response) => {
     }
 
     // Verificar que la cuenta del usuario esta activa
-    //Probando
     if (!usuario.estado) {
       return res.status(400).json({
         msg: "Usuario / Password no son correctos - estado:false",
