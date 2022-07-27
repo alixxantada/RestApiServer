@@ -2,11 +2,18 @@ const { Router } = require("express");
 
 const { check } = require("express-validator");
 
-const { validarCampos } = require("../middlewares/validar-campos");
+// const { validarCampos } = require("../middlewares/validar-campos");
 
-const { validarJWT } = require("../middlewares/validar-jwt");
+// const { validarJWT } = require("../middlewares/validar-jwt");
 
-const { esAdminRole } = require("../middlewares/validar-roles");
+// const { esAdminRole, tieneRole } = require("../middlewares/validar-roles");
+
+const {
+  validarCampos,
+  validarJWT,
+  esAdminRole,
+  tieneRole,
+} = require("../middlewares"); // Poniendo ruta relativa del archivo, al apuntar a middlewares va a coger el archivo index.js
 
 const {
   esRoleValido,
@@ -63,7 +70,8 @@ router.delete(
   "/:id",
   [
     validarJWT,
-    esAdminRole,
+    // esAdminRole, // Con este middleware obligamos a tener un rol concreto a la hora de realizar ciertas acciones
+    tieneRole("ADMIN_ROLE", "VENTAS_ROLE"), // Con este middleware hacemos que el usuario que quiere realizar la accion tenga que tener uno de los roles que le pasamos a la funcion tieneRole
     check("id", "No es un ID Mongo válido").isMongoId(),
     check("id").custom(existeUsuarioPorId),
     validarCampos,
