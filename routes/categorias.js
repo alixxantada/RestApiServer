@@ -56,6 +56,7 @@ router.delete(
   [
     validarJWT,
     esAdminRole,
+    check("id", "El id no es valido").isMongoId(),
     check("id").custom(existeCategoriaPorId),
     validarCampos,
   ],
