@@ -30,6 +30,7 @@ const categoriaGetOne = async (req, res = response) => {
 };
 
 const categoriaPost = async (req = request, res = response) => {
+  // Nombre de la categoria a mayus
   const nombre = req.body.nombre.toUpperCase();
   const categoriaDB = await Categoria.findOne({ nombre });
 
@@ -41,6 +42,7 @@ const categoriaPost = async (req = request, res = response) => {
 
   const data = {
     nombre,
+    // Guardamos el id del usuario logueado
     usuario: req.usuario._id,
   };
   // Creamos la instancia del schema de  usuario y le pasamos el body que contiene los datos
@@ -56,10 +58,15 @@ const categoriaPost = async (req = request, res = response) => {
 
 const categoriaPut = async (req = request, res = response) => {
   const { id } = req.params;
-  const { _id, ...resto } = req.body;
+  const { usuario, estado, ...data } = req.body;
 
+  // Nombre de la categoria a mayus
+  data.nombre = data.nombre.toUpperCase();
+
+  //Guardamos el id del usuario logueado
+  data.usuario = req.usuario._id;
   // Buscamos el usuario en bbdd por id y le enviamos todos los demas datos
-  const categoria = await Categoria.findByIdAndUpdate(id, resto, { new: true });
+  const categoria = await Categoria.findByIdAndUpdate(id, data, { new: true });
 
   res.json({
     categoria,
@@ -70,10 +77,14 @@ const categoriaDelete = async (req = request, res = response) => {
   const { id } = req.params;
 
   // Borrado logico de categoria
-  const categoria = await Categoria.findByIdAndUpdate(id, { estado: false });
+  const categoriaBorrada = await Categoria.findByIdAndUpdate(
+    id,
+    { estado: false },
+    { new: true } // Para que se reflejen los cambios ya en la propia respuesta
+  );
 
   res.json({
-    categoria,
+    categoriaBorrada,
   });
 };
 

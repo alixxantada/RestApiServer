@@ -5,9 +5,11 @@ const {
   categoriaPost,
   categoriaGetAll,
   categoriaGetOne,
+  categoriaPut,
+  categoriaDelete,
 } = require("../controllers/categorias");
 const { existeCategoriaPorId } = require("../helpers/db-validators");
-const { validarCampos, validarJWT } = require("../middlewares");
+const { validarCampos, validarJWT, esAdminRole } = require("../middlewares");
 
 const router = Router();
 
@@ -37,17 +39,27 @@ router.post(
 );
 
 // Actualizar una categoria - privado - cualquiera con un token válido
-router.put("/:id", [check("id").custom(existeCategoriaPorId)], (req, res) => {
-  res.json("put");
-});
+router.put(
+  "/:id",
+  [
+    validarJWT,
+    check("nombre", "El nombre es obligatorio").not().isEmpty(),
+    check("id").custom(existeCategoriaPorId),
+    validarCampos,
+  ],
+  categoriaPut
+);
 
 // Borrar una categoria (borrado logico) - privado - Solo rol de Admin
 router.delete(
   "/:id",
-  [check("id").custom(existeCategoriaPorId)],
-  (req, res) => {
-    res.json("delete");
-  }
+  [
+    validarJWT,
+    esAdminRole,
+    check("id").custom(existeCategoriaPorId),
+    validarCampos,
+  ],
+  categoriaDelete
 );
 
 module.exports = router;
