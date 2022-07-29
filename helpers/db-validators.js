@@ -35,10 +35,22 @@ const existeProductoPorId = async (id) => {
   }
 };
 
+// Validar Colecciones
+const coleccionesPermitidas = (coleccion = "", colecciones = []) => {
+  const incluida = colecciones.includes(coleccion);
+  if (!incluida) {
+    throw new Error(
+      `La coleccion ${coleccion} no es valida, colecciones validas: ${colecciones}`
+    );
+  }
+  return true;
+};
+
 module.exports = {
   esRoleValido,
   existeEmail,
   existeUsuarioPorId,
   existeCategoriaPorId,
   existeProductoPorId,
+  coleccionesPermitidas,
 };
